@@ -1,9 +1,32 @@
+import { shuffle } from './shuffle'
+import { RandomUtil } from '@yunser/random-util'
+
 console.log('random color start')
 
-figma.showUI(__html__)
+figma.showUI(__html__, {
+    width: 480,
+    height: 480,
+})
 
 
 // figma.closePlugin()
+
+let deafultGroups = [
+    {
+        id: '1',
+        name: '人名',
+        list: ['张三', '李四', '王五'],
+    },
+    {
+        id: '2',
+        name: '星期',
+        list: ['星期一', '星期二', '星期三'],
+    },
+]
+
+
+let groups = [
+]
 
 figma.ui.onmessage = async msg => {
     console.log('ui.onmessage', msg)
@@ -28,28 +51,57 @@ figma.ui.onmessage = async msg => {
         return result;
     }
 
-    if (msg.type == 'random') {
+    function random(min, max) {
+        return min + Math.random() * (max - min + 1)
+    }
+
+    if (msg.type == 'getData') {
+        groups = await figma.clientStorage.getAsync('groups') || deafultGroups
+        figma.ui.postMessage({
+            type: 'groupData',
+            data: groups,
+                // pluginMessage: {
+                // }
+        })
+    }
+    else if (msg.type == 'setData') {
+        groups = msg.data
+        figma.clientStorage.setAsync('groups', groups)
+    }
+    else if (msg.type == 'random') {
         // handleTooltipMsg(msg)
-        for (const node of figma.currentPage.selection) {
-            if (node.type == 'TEXT') {
-                // node.characters = 
-                await figma.loadFontAsync(node.fontName as FontName)
-                node.deleteCharacters(0, node.characters.length)
-                node.insertCharacters(0, generateString(16))
+        const { groupId } = msg
+        const group = groups.find(g => g.id == groupId)
+
+        const randomList = shuffle(group.list)
+        console.log('randomList', randomList)
+
+        if (group.list.length) {
+            for (const node of figma.currentPage.selection) {
+                if (node.type == 'TEXT') {
+                    // node.characters = 
+                    await figma.loadFontAsync(node.fontName as FontName)
+                    node.deleteCharacters(0, node.characters.length)
+                    // node.insertCharacters(0, generateString(16))
+                    const text = group.list[RandomUtil.randomInt(0, group.list.length - 1)]
+                    console.log('text', text)
+                    node.insertCharacters(0, text)
+                    
+                }
+                console.log('node', node)
+                // if (node.fills) {
+                //     node.fills = [
+                //         {
+                //             type: "SOLID",
+                //             color: {
+                //                 r: Math.random(),
+                //                 g: Math.random(),
+                //                 b: Math.random(),
+                //             },
+                //         }
+                //     ]
+                // }
             }
-            console.log('node', node)
-            // if (node.fills) {
-            //     node.fills = [
-            //         {
-            //             type: "SOLID",
-            //             color: {
-            //                 r: Math.random(),
-            //                 g: Math.random(),
-            //                 b: Math.random(),
-            //             },
-            //         }
-            //     ]
-            // }
         }
     }
 }

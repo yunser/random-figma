@@ -1,17 +1,42 @@
 body {
-    font: 12px sans-serif;
+    /* font: 12px sans-serif;
     text-align: center;
-    margin: 20px;
+    margin: 20px; */
 }
+.app {
+    /* width: 600px;
+    height: 600px; */
+    
+}
+.groups {}
+.groups .name {
+    flex-grow: 1;
+    /* border: 1px solid #000; */
+    cursor: pointer;
+}
+.groups .name:hover {
+    color: #09c;
+}
+.groups .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    /* border-bottom: 1px solid #000; */
+}
+
 button {
-    border-radius: 5px;
+    border-radius: 2px;
     background: white;
     color: black;
     border: none;
     padding: 8px 15px;
-    margin: 0 5px;
+    /* margin: 0 5px; */
     box-shadow: inset 0 0 0 1px black;
     outline: none;
+}
+.form-item {
+    margin-bottom: 16px;
 }
 #create {
     box-shadow: none;
@@ -19,19 +44,36 @@ button {
     color: white;
 }
 input {
+    width: 100%;
+    display: inline-block;
     border: none;
     outline: none;
     padding: 8px;
+    border: 1px solid #000;
 }
 input:hover {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
-button:focus {
+/* button:focus {
     box-shadow: inset 0 0 0 2px #18a0fb;
-}
-#create:focus {
+} */
+/* #create:focus {
     box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
-}
+} */
 input:focus {
-    box-shadow: inset 0 0 0 2px #18a0fb;
+    /* box-shadow: inset 0 0 0 2px #18a0fb; */
+}
+textarea {
+    width: 100%;
+    display: inline-block;
+    border: none;
+    outline: none;
+    padding: 8px;
+    border: 1px solid #000;
+}
+
+.ui-space {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
